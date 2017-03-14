@@ -3,6 +3,6 @@
 @Grab(group='org.ajoberstar', module='grgit', version='1.8.0')
 
 import org.ajoberstar.grgit.*
-def grgit = Grgit.open(dir:"WORKSPACE")
+def grgit = Grgit.open(dir:'./')
 def map = [COMPUTE_VAR2: grgit.head().abbreviatedId]
 print map
