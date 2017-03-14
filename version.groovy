@@ -5,4 +5,17 @@
 import org.ajoberstar.grgit.*
 def grgit = Grgit.open(dir:'./')
 def map = [COMPUTE_VAR2: grgit.head().abbreviatedId]
-print map
+
+println map
+
+File propsFile = new File('./version.properties')
+def newProps = new Properties()
+
+newProps.setProperty('SFTP_USER_HASH', 'woo')
+newProps.setProperty('GD_SFTP_URI', 'ftp://woo.com')
+
+propsFile.withWriterAppend( 'UTF-8' ) { fileWriter ->
+    newProps.each { key, value ->
+        fileWriter.writeLine "$key=$value"
+    }
+}
