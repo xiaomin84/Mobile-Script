@@ -28,3 +28,5 @@ propsFile.withWriterAppend( 'UTF-8' ) { fileWriter ->
         fileWriter.writeLine "$key=$value"
     }
 }
+
+grgit.close()
