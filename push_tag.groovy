@@ -3,17 +3,14 @@
 @Grab(group='org.ajoberstar', module='grgit', version='1.8.0')
 
 import org.ajoberstar.grgit.*
-def VersionName = 1.0.1
-def Credentials = credential
-credential.username = 'git'
-credential.password = 'git'
+def VersionName = '1.0.1'
 
-def grgit = Grgit.open(dir:'./',crendential)
+def credentials = new Credentials('git', 'git')
+
+def grgit = Grgit.open('./',credentials)
 
 grgit.tag.add(name: "$VersionName", message: "Release daily build $VersionName",force: true)
 
-grgit.push(tags: true)
-
-newProps.setProperty('VersionName', "$VersionName")
+grgit.push(tags: true, remote: 'MainProject')
 
 grgit.close()
