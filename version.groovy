@@ -3,28 +3,25 @@
 @Grab(group='org.ajoberstar', module='grgit', version='1.8.0')
 
 import org.ajoberstar.grgit.*
+
+def release = System.getenv("ReleaseName")
 def grgit = Grgit.open(dir:'./')
+
 def history = grgit.log {
-   range 'HEAD', '2.0'
+   range "$release", 'HEAD'
  }
-history.each { commit ->
- printfln commit.shortMessage
-}
 
-def map = [COMPUTE_VAR2: grgit.head().abbreviatedId]
+println 'number:'+ history.size()
 
-println map
+def VersionName = "$release" + '-' + history.size() + '-' + grgit.head().abbreviatedId
 
-def workspace = System.getenv("VersionName")
 
-println workspace
-
+println VersionName
 
 File propsFile = new File('./version.properties')
 def newProps = new Properties()
 
-newProps.setProperty('SFTP_USER_HASH', 'woo')
-newProps.setProperty('GD_SFTP_URI', 'ftp://woo.com')
+newProps.setProperty('VersionName', "$VersionName")
 
 propsFile.withWriterAppend( 'UTF-8' ) { fileWriter ->
     newProps.each { key, value ->
