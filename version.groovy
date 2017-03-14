@@ -8,6 +8,11 @@ def map = [COMPUTE_VAR2: grgit.head().abbreviatedId]
 
 println map
 
+def workspace = System.getenv("WORKSPACE")
+
+println workspace
+
+
 File propsFile = new File('./version.properties')
 def newProps = new Properties()
 
