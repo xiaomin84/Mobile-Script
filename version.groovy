@@ -4,6 +4,13 @@
 
 import org.ajoberstar.grgit.*
 def grgit = Grgit.open(dir:'./')
+def history = grgit.log {
+   range 'HEAD', '2.0'
+ }
+history.each { commit ->
+ printfln commit.shortMessage
+}
+
 def map = [COMPUTE_VAR2: grgit.head().abbreviatedId]
 
 println map
