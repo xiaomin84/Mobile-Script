@@ -8,7 +8,7 @@ def map = [COMPUTE_VAR2: grgit.head().abbreviatedId]
 
 println map
 
-def workspace = System.getenv("WORKSPACE")
+def workspace = System.getenv("VersionName")
 
 println workspace
 
