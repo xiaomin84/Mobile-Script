@@ -3,7 +3,6 @@
 @Grab(group='org.ajoberstar', module='grgit', version='1.8.0')
 
 import org.ajoberstar.grgit.*
-def VersionName = '1.0.1'
 
 def credentials = new Credentials('git', 'git')
 
