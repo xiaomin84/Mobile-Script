@@ -1,3 +1,4 @@
+#!/usr/bin/env groovy
 @Grab(group='org.slf4j', module='slf4j-simple', version='1.7.21')
 @Grab(group='org.ajoberstar', module='grgit', version='1.8.0')
 
