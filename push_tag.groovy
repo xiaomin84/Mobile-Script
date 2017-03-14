@@ -8,7 +8,9 @@ def credentials = new Credentials('git', 'git')
 
 def grgit = Grgit.open('./',credentials)
 
-grgit.tag.add(name: "${1}", message: "Release daily build ${1}",force: true)
+def versionname = System.getProperty('VersionName')
+
+grgit.tag.add(name: "${versionname}", message: "Release daily build ${versionname}",force: true)
 
 grgit.push(tags: true, remote: 'MainProject')
 
