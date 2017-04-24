@@ -16,13 +16,11 @@ gradle.rootProject.afterEvaluate{
 
     gradle.rootProject.configure(rootProject)
     {
-	println "config version code"
         apply {
-            apply from:"$project.rootDir/tools/script-git-version.gradle"
+            apply from:"$project.rootDir/Mobile-Script/tools/script-git-version.gradle"
 	}
-        appVersionName = getVersionCode()
-	appVersionCode = "1001"
-	println "$project.name"
+        appVersionName = getVersionName()
+	appVersionCode = getVersionCode()
     }
  }
 }

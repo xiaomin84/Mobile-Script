@@ -1,22 +1,33 @@
 apply plugin: 'org.ajoberstar.grgit'
 apply plugin: "org.ajoberstar.release-opinion"
+
+def getVersionName()
+{
+    return version
+}
+
 def getVersionCode()
 {
-  if("Dev".equals(buildType))
-  {
-    def m2 = new Date()
-    return m2.getTime()/1000 
-  }
-  else
-  {
-     return  version
-  }
+    if("ReleaseBuild".equals(buildType))
+    {
+        return grgit.tag.list().size+1
+    }
+    else if("DailyBuid".equals(buildType))
+    {
+        def date = new Date()
+        return date.getTime()/1000 
+    }
+    else 
+    {
+        return  appVersionCode
+    }
 
      
 }
 
 ext {
    getVersionCode = this.&getVersionCode
+   getVersionName = this.&getVersionName
 }
 
 
