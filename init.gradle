@@ -14,8 +14,14 @@ gradle.projectsLoaded {
 
 gradle.rootProject.afterEvaluate{
 
+      
     gradle.rootProject.configure(rootProject)
-    {
+    {   
+        if(new File("$project.rootDir/Mobile-Script", '.git').directory)
+	{
+		file("$project.rootDir/Mobile-Script/.git").renameTo(file("$project.rootDir/Mobile-Script/.gitrename"))
+ 	}
+
         apply {
             apply from:"$project.rootDir/Mobile-Script/tools/script-git-version.gradle"
 	}
@@ -24,3 +30,4 @@ gradle.rootProject.afterEvaluate{
     }
  }
 }
+ 
