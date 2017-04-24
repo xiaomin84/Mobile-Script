@@ -1,0 +1,28 @@
+gradle.projectsLoaded {
+   gradle.rootProject.buildscript {
+        repositories {
+            maven {
+               name "DRC_BJ_JCENTER_REPO"
+               url "http://172.22.35.162:8081/repository/jcenter"
+            }
+         }
+
+      dependencies {
+          classpath 'org.ajoberstar:gradle-git:1.7.1'
+      }
+  }
+
+gradle.rootProject.afterEvaluate{
+
+    gradle.rootProject.configure(rootProject)
+    {
+	println "config version code"
+        apply {
+            apply from:"$project.rootDir/tools/script-git-version.gradle"
+	}
+        appVersionName = getVersionCode()
+	appVersionCode = "1001"
+	println "$project.name"
+    }
+ }
+}
