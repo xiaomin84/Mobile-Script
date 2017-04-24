@@ -8,14 +8,16 @@ def getVersionName()
 
 def getVersionCode()
 {
-    if("ReleaseBuild".equals(buildType))
+    println "get version code is called $buildType"
+    if ("ReleaseBuild".equals(buildType))
     {
         return grgit.tag.list().size+1
     }
-    else if("DailyBuid".equals(buildType))
+
+    if ("DailyBuild".equals(buildType))
     {
-        def date = new Date()
-        return date.getTime()/1000 
+        def m = new Date()
+        return m.getTime()/1000 
     }
     else 
     {
