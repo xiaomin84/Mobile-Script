@@ -1,33 +1,66 @@
+def androidAppProject (Project project) {
+	project.plugins.hasPlugin("com.android.application")
+}
+
+def getDate()
+{
+  def date = new Date()
+  def formattedDate = date.format('yyyyMMddHHmm')
+  return formattedDate
+}
+
 gradle.projectsLoaded {
-   gradle.rootProject.buildscript {
-        repositories {
-            maven {
+  gradle.rootProject.buildscript {
+    repositories {
+      maven {
                name "DRC_BJ_JCENTER_REPO"
                url "http://172.22.35.162:8081/repository/jcenter"
             }
-         }
+      }
 
       dependencies {
           classpath 'org.ajoberstar:gradle-git:1.7.1'
       }
-  }
+  }  
 
-gradle.rootProject.afterEvaluate{
-
-      
+  gradle.rootProject.afterEvaluate {      
     gradle.rootProject.configure(rootProject)
     {   
         if(new File("$project.rootDir/Mobile-Script", '.git').directory)
-	{
-		file("$project.rootDir/Mobile-Script/.git").renameTo(file("$project.rootDir/Mobile-Script/.gitrename"))
- 	}
+	      {
+		      file("$project.rootDir/Mobile-Script/.git").renameTo(file("$project.rootDir/Mobile-Script/.gitrename"))
+ 	      }
 
         apply {
             apply from:"$project.rootDir/Mobile-Script/tools/script-git-version.gradle"
-	}
+	      } 
         appVersionName = getVersionName()
-	appVersionCode = getVersionCode()
+	      appVersionCode = getVersionCode()
+    }
+    
+    gradle.rootProject.subprojects {
+	    project.afterEvaluate { 
+    		if(androidAppProject(project)) 
+    		{	
+			      project.android.applicationVariants.all { variant ->
+				      variant.outputs.each { output ->
+                def newName
+                def timeNow = getDate()
+                def outDirectory = "$project.rootDir/build/outputs/apk"
+                def signFlag =  variant.buildType.name.equals('debug') ? "signed" : "unsigned"
+
+                newName = rootProject.name+'-'+project.name+'-'+variant.productFlavors[0].name+'-'+variant.buildType.name \
+                +'-'+version+'-'+timeNow+'-'+'-'+rootProject.buildType+'-'+signFlag+'.apk'
+
+                output.outputFile = new File(outDirectory, newName)
+
+				      } 
+
+			      } 	
+    		}	
+	    } 
     }
  }
+
 }
  
