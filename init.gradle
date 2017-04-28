@@ -50,7 +50,7 @@ gradle.projectsLoaded {
                 def signFlag =  variant.buildType.name.equals('debug') ? "signed" : "unsigned"
 
                 newName = rootProject.name+'-'+project.name+'-'+variant.productFlavors[0].name+'-'+variant.buildType.name \
-                +'-'+version+'-'+rootProject.BuildNumber+'-'+'-'+rootProject.buildType+'-'+signFlag+'.apk'
+                +'-'+version+'-'+rootProject.BuildNumber+'-'+rootProject.buildType+'-'+signFlag+'.apk'
 
                 output.outputFile = new File(outDirectory, newName)
 
