@@ -72,6 +72,7 @@ gradle.projectsLoaded {
                 output.outputFile = new File(outDirectory, newName)
 
                 updateProperiesFile(propertyName, newName)
+                updateProperiesFile("apkOutDir", "build/output/apk")
 
 				      } 
 
