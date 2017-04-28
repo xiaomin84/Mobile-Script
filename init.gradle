@@ -51,6 +51,7 @@ gradle.projectsLoaded {
         appVersionName = getVersionName()
 	      appVersionCode = getVersionCode()
         updateProperiesFile("VersionName", appVersionName.toString())
+        updateProperiesFile("apkOutDir", "build/output/apk")
     }
     
     gradle.rootProject.subprojects {
@@ -71,8 +72,14 @@ gradle.projectsLoaded {
                 propertyName =variant.productFlavors[0].name+variant.buildType.name+'APK'
                 output.outputFile = new File(outDirectory, newName)
 
-                updateProperiesFile(propertyName, newName)
-                updateProperiesFile("apkOutDir", "build/output/apk")
+                if(newName.endsWith('unsigned.apk'))
+                {
+                    updateProperiesFile(propertyName, newName-'unsigned.apk'+'signed.apk')
+                }
+                else
+                {
+                    updateProperiesFile(propertyName, newName)
+                }
 
 				      } 
 
