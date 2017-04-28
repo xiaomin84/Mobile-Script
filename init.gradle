@@ -51,7 +51,7 @@ gradle.projectsLoaded {
         appVersionName = getVersionName()
 	      appVersionCode = getVersionCode()
         updateProperiesFile("VersionName", appVersionName.toString())
-        updateProperiesFile("apkOutDir", "build/output/apk")
+        updateProperiesFile("apkOutDir", "build/outputs/apk")
     }
     
     gradle.rootProject.subprojects {
