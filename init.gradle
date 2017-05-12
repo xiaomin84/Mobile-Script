@@ -1,5 +1,5 @@
 def androidAppProject (Project project) {
-	project.plugins.hasPlugin("com.android.application")
+    project.plugins.hasPlugin("com.android.application")
 }
 
 def updateProperiesFile(key, value)
@@ -14,6 +14,19 @@ def updateProperiesFile(key, value)
               fileWriter.writeLine "$k=$v"
                   }
   }
+}
+
+
+def getReleaseAPKUrl(def release_type, Project project)
+{
+   Properties properties = new Properties()
+   File propertiesFile = new File('./build.properties')
+   propertiesFile.withInputStream {
+      properties.load(it)
+   }
+  def releaseValue = properties."${release_type}APK"
+  
+  return releaseValue?"${project.DEPLOY_SERVER_URL}/${project.REMOTE_PROJECT_NAME}/$rootProject.appVersionName/$releaseValue":null
 }
 
 def getDate()
@@ -52,6 +65,7 @@ gradle.projectsLoaded {
 	      appVersionCode = getVersionCode()
         updateProperiesFile("VersionName", appVersionName.toString())
         updateProperiesFile("apkOutDir", "build/outputs/apk")
+        ext.apkOutDir = "build/outputs/apk"
     }
     
     gradle.rootProject.subprojects {
@@ -60,6 +74,7 @@ gradle.projectsLoaded {
     		{	
 			      project.android.applicationVariants.all { variant ->
 				      variant.outputs.each { output ->
+
                 def newName
                 def propertyName
                 def timeNow = getDate()
@@ -71,7 +86,7 @@ gradle.projectsLoaded {
                 
                 propertyName =variant.productFlavors[0].name+variant.buildType.name+'APK'
                 output.outputFile = new File(outDirectory, newName)
-
+         
                 if(newName.endsWith('unsigned.apk'))
                 {
                     updateProperiesFile(propertyName, newName-'unsigned.apk'+'signed.apk')
@@ -84,10 +99,28 @@ gradle.projectsLoaded {
 				      } 
 
 			      } 	
-    		}	
+            println rootProject.getReleaseDes("fsf")
+            project.tasks.create(["name":"copyprodtemplates", "type":Copy]){
+              outputs.upToDateWhen { false}
+              from "$project.rootDir/templates"
+              into "$project.rootDir/$rootProject.apkOutDir"
+              include '*-template.json'
+              rename {fileName ->
+              println fileName
+              "${(fileName-'template.json'+project.name+'-'+version+'.json')}"
+              }
+              doFirst {
+                expand([
+                  VERSION: "$rootProject.appVersionName",
+                  VERSIONCODE: "$rootProject.appVersionCode",
+                  URLNAME: getReleaseAPKUrl(RELEASE_TYPE,project),
+                  DESCRIPTION: getReleaseDes("v$rootProject.appVersionName")
+                ])
+              }
+           }
 	    } 
     }
  }
 
 }
- 
+} 

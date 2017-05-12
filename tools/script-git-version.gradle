@@ -27,9 +27,15 @@ def getVersionCode()
      
 }
 
+def getReleaseDes(def tagName)
+{
+    return "something"
+}
+
 ext {
    getVersionCode = this.&getVersionCode
    getVersionName = this.&getVersionName
+   getReleaseDes  = this.&getReleaseDes
 }
 
 
