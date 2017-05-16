@@ -99,7 +99,6 @@ gradle.projectsLoaded {
 				      } 
 
 			      } 	
-            println rootProject.getReleaseDes("fsf")
             project.tasks.create(["name":"copyprodtemplates", "type":Copy]){
               outputs.upToDateWhen { false}
               from "$project.rootDir/templates"

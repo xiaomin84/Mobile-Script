@@ -1,6 +1,21 @@
 apply plugin: 'org.ajoberstar.grgit'
 apply plugin: "org.ajoberstar.release-opinion"
 
+buildscript {
+  repositories {
+          maven { 
+            name "DRC_BJ_JCENTER_REPO"
+            url "http://172.22.35.162:8081/repository/jcenter"
+          }
+          dependencies {
+            classpath 'org.ajoberstar:grgit:1.9.1'
+          }
+          
+  } 
+}
+
+import org.ajoberstar.grgit.Tag
+
 def getVersionName()
 {
     return version
@@ -26,10 +41,23 @@ def getVersionCode()
 
      
 }
-
 def getReleaseDes(def tagName)
 {
-    return "something"
+    println "$tagName"
+
+    def matchTag = grgit.tag.list().collect { tag ->
+      [tag:tag, tagName: tag.getName()]
+    }.find {
+      println 'it.tagName:'+it.tagName
+      println '$tagName:'+ tagName
+      def result =  it.tagName.trim().equals("$tagName".trim())
+      println  'result:'+ result
+      return result
+      }
+
+    
+    return matchTag?matchTag.tag.fullMessage.trim().replaceAll("(?m)^[ \t]*\r?\n", ""):"no description"
+    
 }
 
 ext {
